@@ -1,32 +1,114 @@
-# Prerequisites
-*.d
+#include <iostream>
+#include <cstdlib>
+#include <ctime>
+using namespace std;
 
-# Compiled Object files
-*.slo
-*.lo
-*.o
-*.obj
+char table[10][10];
+bool tablebomb[10][10];
+int score=0;
+int x,y;
+void checkbomb()
+{
+	int count=0;
+	if(tablebomb[y-1][x-1]==false && y-1>=0 && x-1>=0) count++;
+	if(tablebomb[y-1][x]==false && y-1>=0) count++;
+	if(tablebomb[y-1][x+1]==false && y-1>=0 && x+1!=10) count++;
+	if(tablebomb[y][x-1]==false && x-1>=0) count++;
+	if(tablebomb[y][x+1]==false && x+1!=10) count++;
+	if(tablebomb[y+1][x-1]==false && x-1>=0 && y+1!=10) count++;
+	if(tablebomb[y+1][x]==false && y+1!=10) count++;
+	if(tablebomb[y+1][x+1]==false && y+1!=10 && x+1!=10) count++;
+	
+	if(count==0) table[y][x]='0';
+	else if(count==1) table[y][x]='1';
+	else if(count==2) table[y][x]='2';
+	else if(count==3) table[y][x]='3';
+	else if(count==4) table[y][x]='4';
+	else if(count==5) table[y][x]='5';
+	else if(count==6) table[y][x]='6';
+	else if(count==7) table[y][x]='7';
+	else if(count==8) table[y][x]='8';
+}
 
-# Precompiled Headers
-*.gch
-*.pch
+void combo()
+{
 
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
 
-# Fortran module files
-*.mod
-*.smod
-
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
-
-# Executables
-*.exe
-*.out
-*.app
+}
+void resetgame()
+{
+	for(int i=0;i<10;i++)
+	{
+		for(int j=0;j<10;j++)
+		table[i][j]='-';
+	}
+	for(int i=0;i<10;i++)
+	{
+		for(int j=0;j<10;j++)
+		tablebomb[i][j]=true;
+	}
+}
+void randombomblocation()
+{
+	int i=0;
+	while(i<20)
+	{
+		int a=rand()%10;
+		int b=rand()%10;
+		if(tablebomb[a][b]==false)
+		continue;
+		else
+		{
+			tablebomb[a][b]=false;
+			i++;
+		}
+	}
+}
+void rungame()
+{
+	while(true)
+	{
+		cout<<" ";
+		for(int i=0;i<10;i++) cout<<" "<<i;
+		cout<<endl;
+		for(int i=0;i<10;i++)
+		{
+			cout<<i<<" ";
+			for(int j=0;j<10;j++)
+			{
+				cout<<table[i][j]<<" ";
+			} 
+			cout<<endl;
+		}
+		cout<<endl<<endl<<"Enter location ( x y ) : ";
+		cin>>x>>y;
+		if(tablebomb[y][x]==false)
+		{
+		cout<<"Game over !!"<<endl;
+		for(int i=0;i<10;i++)
+		{
+			for(int j=0;j<10;j++)
+			{
+				if(tablebomb[i][j]==false) table[i][j]='X';
+				cout<<table[i][j]<<" ";
+			}
+			cout<<endl;
+		}
+		break;
+		}
+		else
+		checkbomb();
+	
+		score++;
+		cout<<"Score : "<<score<<endl<<endl;
+	}
+}
+int main()
+{
+	srand(time(0));
+	resetgame();
+	randombomblocation();
+	rungame();
+	
+	return 0;
+}
