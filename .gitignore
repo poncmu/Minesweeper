@@ -1,13 +1,16 @@
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
+
 using namespace std;
 
 char table[10][10];
 bool tablebomb[10][10];
+bool checktable[10][10];
 int score=0;
 int x,y;
-void checkbomb()
+
+void checkbomb(int x,int y)
 {
 	int count=0;
 	if(tablebomb[y-1][x-1]==false && y-1>=0 && x-1>=0) count++;
@@ -28,87 +31,189 @@ void checkbomb()
 	else if(count==6) table[y][x]='6';
 	else if(count==7) table[y][x]='7';
 	else if(count==8) table[y][x]='8';
+		
+	if(checktable[y][x]==true)
+	score++;
+		
+	checktable[y][x]=false;
 }
-
-void combo()
+void combo(int x,int y)
 {
-
-
+	checkbomb(x,y);
+	int i[8]={};
+	if(table[y][x]=='0')
+	{
+	    while(true)
+	    {
+	    	if(tablebomb[y-1-i[0]][x]==true && y-1-i[0]>=0)
+	    	{
+	    		checkbomb(x,y-1-i[0]);
+	    		i[0]++;
+			}
+			else
+			break;
+		}
+		while(true)
+		{
+			if(tablebomb[y+1+i[1]][x]==true && y+1+i[1]<10)
+	    	{
+	    		checkbomb(x,y+1+i[1]);
+	    		i[1]++;
+			}
+			else
+			break;
+		}
+		while(true)
+		{
+			if(tablebomb[y][x-1-i[2]]==true && x-1-i[2]>=0)
+			{
+				checkbomb(x-1-i[2],y);
+				while(true)
+				{
+					if(tablebomb[y-1-i[3]][x-1-i[2]]==true && y-1-i[3]>=0 && x-1-i[2]>=0)
+					{
+					checkbomb(x-1-i[2],y-1-i[3]);
+					i[3]++;
+				    }
+				    else
+				    break;
+				}
+				while(true)
+				{
+				    if(tablebomb[y+1+i[4]][x-1-i[2]]==true && y+1+i[4]<10 && x-1-i[2]>=0)
+					{
+					checkbomb(x-1-i[2],y+1+i[4]);
+					i[4]++;	
+					}
+					else
+					break;	
+				}
+				i[2]++;
+			}
+			else
+			break;
+		}
+		while(true)
+		{
+			if(tablebomb[y][x+1+i[5]]==true && x+1+i[5]<10)
+			{
+				checkbomb(x+1+i[5],y);
+				while(true)
+				{
+					if(tablebomb[y-1-i[6]][x+1+i[5]]==true && y-1-i[6]>=0 && x+1+i[5]<10)
+					{
+						checkbomb(x+1+i[5],y-1-i[6]);
+						i[6]++;
+					}
+					else
+					break;
+				}
+				while(true)
+				{
+					if(tablebomb[y+1+i[7]][x+1+i[5]]==true && y+1+i[7]<10 && x+1+i[5]<10)
+					{
+						checkbomb(x+1+i[5],y+1+i[7]);
+						i[7]++;
+					}
+					else
+					break;
+				}
+				
+				i[5]++;
+			}
+			else
+			break;
+		}
+	}
 }
 void resetgame()
 {
 	for(int i=0;i<10;i++)
 	{
 		for(int j=0;j<10;j++)
+		{
+		checktable[i][j]=true;
 		table[i][j]='-';
-	}
-	for(int i=0;i<10;i++)
-	{
-		for(int j=0;j<10;j++)
 		tablebomb[i][j]=true;
+	    }	
 	}
 }
+
 void randombomblocation()
 {
 	int i=0;
-	while(i<20)
+	while(i<15)
 	{
 		int a=rand()%10;
 		int b=rand()%10;
-		if(tablebomb[a][b]==false)
-		continue;
-		else
+		if(tablebomb[a][b]==true)
 		{
 			tablebomb[a][b]=false;
 			i++;
 		}
 	}
 }
+
 void rungame()
-{
-	while(true)
-	{
-		cout<<" ";
-		for(int i=0;i<10;i++) cout<<" "<<i;
-		cout<<endl;
-		for(int i=0;i<10;i++)
-		{
-			cout<<i<<" ";
-			for(int j=0;j<10;j++)
-			{
-				cout<<table[i][j]<<" ";
-			} 
-			cout<<endl;
-		}
-		cout<<endl<<endl<<"Enter location ( x y ) : ";
-		cin>>x>>y;
-		if(tablebomb[y][x]==false)
-		{
-		cout<<"Game over !!"<<endl;
-		for(int i=0;i<10;i++)
-		{
-			for(int j=0;j<10;j++)
-			{
-				if(tablebomb[i][j]==false) table[i][j]='X';
-				cout<<table[i][j]<<" ";
-			}
-			cout<<endl;
-		}
-		break;
-		}
-		else
-		checkbomb();
-	
-		score++;
-		cout<<"Score : "<<score<<endl<<endl;
-	}
-}
-int main()
 {
 	srand(time(0));
 	resetgame();
 	randombomblocation();
+	while(true)
+	{
+		cout<<" ";
+		for(int i=0;i<10;i++) cout<<"  "<<i;
+		cout<<endl<<endl;
+		for(int i=0;i<10;i++)
+		{
+			cout<<i<<"  ";
+			for(int j=0;j<10;j++)
+			{
+				cout<<table[i][j]<<"  ";
+			} 
+			cout<<endl<<endl;
+		}
+		
+		cout<<endl<<endl<<"Enter location ( x y ) : ";
+		cin>>x>>y;
+		
+		cout<<endl;
+		if(tablebomb[y][x]==false)
+		{
+		cout<<"    Game over !!"<<endl<<endl;
+		
+		cout<<" ";
+		for(int i=0;i<10;i++) cout<<"  "<<i;
+		cout<<endl<<endl;
+		for(int i=0;i<10;i++)
+		{
+			cout<<i<<"  ";
+			for(int j=0;j<10;j++)
+			{
+				if(tablebomb[i][j]==false) table[i][j]='X';
+				cout<<table[i][j]<<"  ";
+			}
+			cout<<endl<<endl;
+		}
+		break;
+		}
+		else if(checktable[y][x]==true)
+	    combo(x,y);
+	    else
+	    cout<<"Invalid value !!"<<endl;
+		
+		cout<<"Score : "<<score<<endl<<endl;
+		
+		if(score>=85)
+		{
+			cout<<"    You win!!"<<endl;
+			break;
+		}
+	}
+}
+
+int main()
+{
 	rungame();
-	
 	return 0;
 }
