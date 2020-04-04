@@ -159,6 +159,7 @@ void rungame()
 	srand(time(0));
 	resetgame();
 	randombomblocation();
+	
 	while(true)
 	{
 		cout<<" ";
@@ -174,10 +175,14 @@ void rungame()
 			cout<<endl<<endl;
 		}
 		
-		cout<<endl<<endl<<"Enter location ( x y ) : ";
+		cout<<endl<<"Enter location ( x y ) : ";
+		do{
 		cin>>x>>y;
-		
+		if(x<0 || x>10 || y<0 || y>10)
+		cout<<endl<<"Out of range !!"<<endl<<endl;
+	    }while(x<0 || x>10 || y<0 || y>10);
 		cout<<endl;
+		
 		if(tablebomb[y][x]==false)
 		{
 		cout<<"    Game over !!"<<endl<<endl;
@@ -197,10 +202,10 @@ void rungame()
 		}
 		break;
 		}
-		else if(checktable[y][x]==true)
+		else if(checktable[y][x]==true && x>=0 && x<10 && y>=0 && y<10)
 	    combo(x,y);
 	    else
-	    cout<<"Invalid value !!"<<endl;
+	    cout<<endl<<"Invalid value !!"<<endl<<endl;
 		
 		cout<<"Score : "<<score<<endl<<endl;
 		
