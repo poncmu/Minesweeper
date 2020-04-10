@@ -232,7 +232,7 @@ void rungame()
 		}
 			break;
 		}
-		else
+
 		score=0;
 	   }
 	   
