@@ -38,6 +38,7 @@ void combo(int x,int y)
 {
 	checkbomb(x,y);
 	int i[8]={};
+    for(int k=0;k<8;k++) i[k]=0;
 	if(table[y][x]=='0')
 	{
 	    while(true)
