@@ -155,13 +155,17 @@ void randombomblocation()
 }
 
 void rungame()
-{
-	srand(time(0));
-	resetgame();
-	randombomblocation();
-	
+{	
 	while(true)
 	{
+		srand(time(0));
+		char t;
+	    resetgame();
+	    randombomblocation();
+		
+		while(true)
+		{
+		do{
 		cout<<" ";
 		for(int i=0;i<10;i++) cout<<"  "<<i;
 		cout<<endl<<endl;
@@ -174,18 +178,17 @@ void rungame()
 			} 
 			cout<<endl<<endl;
 		}
-		
-		cout<<endl<<"Enter location ( x y ) : ";
-		do{
+				
+		cout<<"Enter location ( x y ) : ";
 		cin>>x>>y;
 		if(x<0 || x>10 || y<0 || y>10)
-		cout<<endl<<"Out of range !!"<<endl<<endl;
+		cout<<endl<<"      Out of range !!      "<<endl<<endl;
 	    }while(x<0 || x>10 || y<0 || y>10);
 		cout<<endl;
 		
 		if(tablebomb[y][x]==false)
 		{
-		cout<<"    Game over !!"<<endl<<endl;
+		cout<<"      Game over !!      "<<endl<<endl;
 		
 		cout<<" ";
 		for(int i=0;i<10;i++) cout<<"  "<<i;
@@ -205,15 +208,21 @@ void rungame()
 		else if(checktable[y][x]==true && x>=0 && x<10 && y>=0 && y<10)
 	    combo(x,y);
 	    else
-	    cout<<endl<<"Invalid value !!"<<endl<<endl;
-		
-		cout<<"Score : "<<score<<endl<<endl;
+	    cout<<endl<<"      Invalid value !!      "<<endl<<endl;
 		
 		if(score>=85)
 		{
-			cout<<"    You win!!"<<endl;
+			cout<<"      You win!!      "<<endl;
 			break;
-		}
+		}	
+	   }
+	   
+	   cout<<"Would you like to try again ?"<<endl;
+	   cout<<"Yes(Y) / No(N)"<<endl;
+	   cin>>t;
+	   if(toupper(t)=='N')
+	   break;
+	   cout<<endl;
 	}
 }
 
