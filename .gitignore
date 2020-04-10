@@ -152,6 +152,24 @@ void randombomblocation()
 	}
 }
 
+void showtable(bool answer)
+{
+		cout<<"     ";
+		for(int i=0;i<10;i++) cout<<"["<<i<<"] ";
+		cout<<endl<<endl;
+	    for(int i=0;i<10;i++)
+		{
+		cout<<"["<<i<<"]"<<"  ";
+		for(int j=0;j<10;j++)
+		{
+			if(tablebomb[i][j]==false && answer==false) table[i][j]='X';
+			
+			cout<<" "<<table[i][j]<<"  ";
+		} 
+		cout<<endl<<endl;
+		}
+}
+
 void rungame()
 {	
 	while(true)
@@ -164,49 +182,26 @@ void rungame()
 		while(true)
 		{
 		do{
-		cout<<" ";
-		for(int i=0;i<10;i++) cout<<"  "<<i;
-		cout<<endl<<endl;
-		for(int i=0;i<10;i++)
-		{
-			cout<<i<<"  ";
-			for(int j=0;j<10;j++)
-			{
-				cout<<table[i][j]<<"  ";
-			} 
-			cout<<endl<<endl;
-		}
-				
+		showtable(true);
+			
+		cout<<endl;		
 		cout<<"Enter location ( x y ) : ";
 		cin>>x>>y;
 		if(x<0 || x>10 || y<0 || y>10)
-		cout<<endl<<"      Out of range !!      "<<endl<<endl;
+		cout<<endl<<"          Out of range !!          "<<endl<<endl;
 	    }while(x<0 || x>10 || y<0 || y>10);
 		cout<<endl;
 		
 		if(tablebomb[y][x]==false)
 		{
-		cout<<"      Game over !!      "<<endl<<endl;
-		
-		cout<<" ";
-		for(int i=0;i<10;i++) cout<<"  "<<i;
-		cout<<endl<<endl;
-		for(int i=0;i<10;i++)
-		{
-			cout<<i<<"  ";
-			for(int j=0;j<10;j++)
-			{
-				if(tablebomb[i][j]==false) table[i][j]='X';
-				cout<<table[i][j]<<"  ";
-			}
-			cout<<endl<<endl;
-		}
+		cout<<"          Game over !!          "<<endl<<endl;
+		showtable(false);
 		break;
 		}
 		else if(checktable[y][x]==true && x>=0 && x<10 && y>=0 && y<10)
 	    combo(x,y);
 	    else
-	    cout<<endl<<"      Invalid value !!      "<<endl<<endl;
+	    cout<<endl<<"          Invalid value !!          "<<endl<<endl;
 		
 		for(int i=0;i<10;i++)
 		{
@@ -217,26 +212,14 @@ void rungame()
 		}
 		if(score>=85)
 		{
-			cout<<"      You win !!      "<<endl<<endl;
-			cout<<" ";
-		for(int i=0;i<10;i++) cout<<"  "<<i;
-		cout<<endl<<endl;
-		for(int i=0;i<10;i++)
-		{
-			cout<<i<<"  ";
-			for(int j=0;j<10;j++)
-			{
-				if(tablebomb[i][j]==false) table[i][j]='X';
-				cout<<table[i][j]<<"  ";
-			}
-			cout<<endl<<endl;
-		}
-			break;
+			cout<<"          You win !!          "<<endl<<endl;
+			showtable(false);
+		    break;
 		}
 
 		score=0;
 	   }
-	   
+	   cout<<endl;
 	   cout<<"Would you like to try again ?"<<endl;
 	   cout<<"Yes(Y) / No(N)"<<endl;
 	   cin>>t;
