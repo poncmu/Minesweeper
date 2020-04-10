@@ -7,8 +7,8 @@ using namespace std;
 char table[10][10];
 bool tablebomb[10][10];
 bool checktable[10][10];
-int score=0;
 int x,y;
+int score=0;
 
 void checkbomb(int x,int y)
 {
@@ -31,9 +31,6 @@ void checkbomb(int x,int y)
 	else if(count==6) table[y][x]='6';
 	else if(count==7) table[y][x]='7';
 	else if(count==8) table[y][x]='8';
-		
-	if(checktable[y][x]==true)
-	score++;
 		
 	checktable[y][x]=false;
 }
@@ -210,11 +207,20 @@ void rungame()
 	    else
 	    cout<<endl<<"      Invalid value !!      "<<endl<<endl;
 		
+		for(int i=0;i<10;i++)
+		{
+			for(int j=0;j<10;j++)
+			{
+				if(checktable[i][j]==false) score++;
+			}
+		}
 		if(score>=85)
 		{
-			cout<<"      You win!!      "<<endl;
+			cout<<"      You win !!      "<<endl;
 			break;
-		}	
+		}
+		else
+		score=0;
 	   }
 	   
 	   cout<<"Would you like to try again ?"<<endl;
