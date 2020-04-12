@@ -152,7 +152,7 @@ void resetgame()
 void randombomblocation()
 {
 	int i=0;
-	while(i<15)
+	while(i<18)
 	{
 		int a=rand()%10;
 		int b=rand()%10;
