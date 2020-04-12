@@ -39,6 +39,7 @@ void combo(int x,int y)
 	checkbomb(x,y);
 	int i[8]={};
     for(int k=0;k<8;k++) i[k]=0;
+    
 	if(table[y][x]=='0')
 	{
 	    while(true)
@@ -74,7 +75,10 @@ void combo(int x,int y)
 					i[3]++;
 				    }
 				    else
-				    break;
+				    {
+				    	i[3]=0;
+				    	break;
+					}
 				}
 				while(true)
 				{
@@ -84,7 +88,10 @@ void combo(int x,int y)
 					i[4]++;	
 					}
 					else
-					break;	
+					{
+					    i[4]=0;
+						break;	
+					}	
 				}
 				i[2]++;
 			}
@@ -104,7 +111,10 @@ void combo(int x,int y)
 						i[6]++;
 					}
 					else
-					break;
+					{
+					  i[6]=0;
+					  break;	
+					}
 				}
 				while(true)
 				{
@@ -114,9 +124,11 @@ void combo(int x,int y)
 						i[7]++;
 					}
 					else
-					break;
+					{
+						i[7]=0;
+						break;
+					}
 				}
-				
 				i[5]++;
 			}
 			else
