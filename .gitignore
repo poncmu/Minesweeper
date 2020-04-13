@@ -34,6 +34,7 @@ void checkbomb(int x,int y)
 		
 	checktable[y][x]=false;
 }
+
 void combo(int x,int y)
 {
 	checkbomb(x,y);
@@ -210,7 +211,7 @@ void rungame()
 		showtable(false);
 		break;
 		}
-		else if(checktable[y][x]==true && x>=0 && x<10 && y>=0 && y<10)
+		else if(checktable[y][x]==true)
 	    combo(x,y);
 	    else
 	    cout<<"               Invalid value !!"<<endl<<endl;
@@ -222,7 +223,8 @@ void rungame()
 				if(checktable[i][j]==false) score++;
 			}
 		}
-		if(score>=85)
+		
+		if(score>=80)
 		{
 			cout<<"               You win !!"<<endl<<endl;
 			showtable(false);
@@ -232,7 +234,7 @@ void rungame()
 		score=0;
 	   }
 	   cout<<endl;
-	   cout<<"Would you like to try again ?"<<endl;
+	   cout<<"Would you like to play again ?"<<endl;
 	   cout<<"Yes(Y) / No(N)"<<endl;
 	   cin>>t;
 	   if(toupper(t)=='N')
