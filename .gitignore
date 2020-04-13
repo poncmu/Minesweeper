@@ -15,12 +15,12 @@ void checkbomb(int x,int y)
 	int count=0;
 	if(tablebomb[y-1][x-1]==false && y-1>=0 && x-1>=0) count++;
 	if(tablebomb[y-1][x]==false && y-1>=0) count++;
-	if(tablebomb[y-1][x+1]==false && y-1>=0 && x+1!=10) count++;
+	if(tablebomb[y-1][x+1]==false && y-1>=0 && x+1<10) count++;
 	if(tablebomb[y][x-1]==false && x-1>=0) count++;
-	if(tablebomb[y][x+1]==false && x+1!=10) count++;
-	if(tablebomb[y+1][x-1]==false && x-1>=0 && y+1!=10) count++;
-	if(tablebomb[y+1][x]==false && y+1!=10) count++;
-	if(tablebomb[y+1][x+1]==false && y+1!=10 && x+1!=10) count++;
+	if(tablebomb[y][x+1]==false && x+1<10) count++;
+	if(tablebomb[y+1][x-1]==false && x-1>=0 && y+1<10) count++;
+	if(tablebomb[y+1][x]==false && y+1<10) count++;
+	if(tablebomb[y+1][x+1]==false && y+1<10 && x+1<10) count++;
 	
 	if(count==0) table[y][x]='0';
 	else if(count==1) table[y][x]='1';
@@ -176,7 +176,6 @@ void showtable(bool answer)
 		for(int j=0;j<10;j++)
 		{
 			if(tablebomb[i][j]==false && answer==false) table[i][j]='X';
-			
 			cout<<" "<<table[i][j]<<"  ";
 		} 
 		cout<<endl<<endl;
@@ -195,7 +194,6 @@ void rungame()
 		while(true)
 		{
 		do{
-			
 		showtable(true);
 		cout<<endl;		
 		cout<<"Enter location ( x y ) : ";
@@ -227,7 +225,7 @@ void rungame()
 		if(score>=80)
 		{
 			cout<<"               You win !!"<<endl<<endl;
-			showtable(false);
+			showtable(true);
 		    break;
 		}
 
