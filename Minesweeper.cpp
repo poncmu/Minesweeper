@@ -1,0 +1,249 @@
+#include <iostream>
+#include <cstdlib>
+#include <ctime>
+
+using namespace std;
+
+char table[10][10];
+bool tablebomb[10][10];
+bool checktable[10][10];
+int x,y;
+int score=0;
+
+void checkbomb(int x,int y)
+{
+	int count=0;
+	if(tablebomb[y-1][x-1]==false && y-1>=0 && x-1>=0) count++;
+	if(tablebomb[y-1][x]==false && y-1>=0) count++;
+	if(tablebomb[y-1][x+1]==false && y-1>=0 && x+1<10) count++;
+	if(tablebomb[y][x-1]==false && x-1>=0) count++;
+	if(tablebomb[y][x+1]==false && x+1<10) count++;
+	if(tablebomb[y+1][x-1]==false && x-1>=0 && y+1<10) count++;
+	if(tablebomb[y+1][x]==false && y+1<10) count++;
+	if(tablebomb[y+1][x+1]==false && y+1<10 && x+1<10) count++;
+	
+	if(count==0) table[y][x]='0';
+	else if(count==1) table[y][x]='1';
+	else if(count==2) table[y][x]='2';
+	else if(count==3) table[y][x]='3';
+	else if(count==4) table[y][x]='4';
+	else if(count==5) table[y][x]='5';
+	else if(count==6) table[y][x]='6';
+	else if(count==7) table[y][x]='7';
+	else if(count==8) table[y][x]='8';
+		
+	checktable[y][x]=false;
+}
+
+void combo(int x,int y)
+{
+	checkbomb(x,y);
+	int i[8]={};
+    for(int k=0;k<8;k++) i[k]=0;
+	if(table[y][x]=='0')
+	{
+	    while(true)
+	    {
+	    	if(tablebomb[y-1-i[0]][x]==true && y-1-i[0]>=0)
+	    	{
+	    		checkbomb(x,y-1-i[0]);
+	    		i[0]++;
+			}
+			else
+			break;
+		}
+		while(true)
+		{
+			if(tablebomb[y+1+i[1]][x]==true && y+1+i[1]<10)
+	    	{
+	    		checkbomb(x,y+1+i[1]);
+	    		i[1]++;
+			}
+			else
+			break;
+		}
+		while(true)
+		{
+			if(tablebomb[y][x-1-i[2]]==true && x-1-i[2]>=0)
+			{
+				checkbomb(x-1-i[2],y);
+				while(true)
+				{
+					if(tablebomb[y-1-i[3]][x-1-i[2]]==true && y-1-i[3]>=0 && x-1-i[2]>=0)
+					{
+					checkbomb(x-1-i[2],y-1-i[3]);
+					i[3]++;
+				    }
+				    else
+				    {
+				    	i[3]=0;
+				    	break;
+					}
+				}
+				while(true)
+				{
+				    if(tablebomb[y+1+i[4]][x-1-i[2]]==true && y+1+i[4]<10 && x-1-i[2]>=0)
+					{
+					checkbomb(x-1-i[2],y+1+i[4]);
+					i[4]++;	
+					}
+					else
+					{
+					i[4]=0;
+					break;	
+					}	
+				}
+				i[2]++;
+			}
+			else
+			break;
+		}
+		while(true)
+		{
+			if(tablebomb[y][x+1+i[5]]==true && x+1+i[5]<10)
+			{
+				checkbomb(x+1+i[5],y);
+				while(true)
+				{
+					if(tablebomb[y-1-i[6]][x+1+i[5]]==true && y-1-i[6]>=0 && x+1+i[5]<10)
+					{
+						checkbomb(x+1+i[5],y-1-i[6]);
+						i[6]++;
+					}
+					else
+					{
+						i[6]=0;
+						break;
+					}
+				}
+				while(true)
+				{
+					if(tablebomb[y+1+i[7]][x+1+i[5]]==true && y+1+i[7]<10 && x+1+i[5]<10)
+					{
+						checkbomb(x+1+i[5],y+1+i[7]);
+						i[7]++;
+					}
+					else
+					{
+					    i[7]=0;
+						break;	
+					}
+				}
+				
+				i[5]++;
+			}
+			else
+			break;
+		}
+	}
+}
+
+void resetgame()
+{
+	for(int i=0;i<10;i++)
+	{
+		for(int j=0;j<10;j++)
+		{
+		table[i][j]='-';
+		checktable[i][j]=true;
+		tablebomb[i][j]=true;
+	    }	
+	}
+}
+
+void randombomblocation()
+{
+	int i=0;
+	while(i<20)
+	{
+		int a=rand()%10;
+		int b=rand()%10;
+		if(tablebomb[a][b]==true)
+		{
+			tablebomb[a][b]=false;
+			i++;
+		}
+	}
+}
+
+void showtable(bool answer)
+{
+		cout<<"     ";
+		for(int i=0;i<10;i++) cout<<"["<<i<<"] ";
+		cout<<endl<<endl;
+	    for(int i=0;i<10;i++)
+		{
+		cout<<"["<<i<<"]"<<"  ";
+		for(int j=0;j<10;j++)
+		{
+			if(tablebomb[i][j]==false && answer==false) table[i][j]='X';
+			cout<<" "<<table[i][j]<<"  ";
+		} 
+		cout<<endl<<endl;
+		}
+}
+
+void rungame()
+{	
+	while(true)
+	{
+		srand(time(0));
+		char t;
+	    resetgame();
+	    randombomblocation();
+		
+		while(true)
+		{
+		do{
+		showtable(true);
+		cout<<endl;		
+		cout<<"Enter location ( x y ) : ";
+		cin>>x>>y;
+		if(x<0 || x>10 || y<0 || y>10)
+		cout<<endl<<"               Out of range !!"<<endl<<endl;
+	    }while(x<0 || x>10 || y<0 || y>10);
+		cout<<endl;
+		
+		if(tablebomb[y][x]==false)
+		{
+		cout<<"               Game over !!"<<endl<<endl;
+		showtable(false);
+		break;
+		}
+		else if(checktable[y][x]==true)
+	    combo(x,y);
+	    else
+	    cout<<"               Invalid value !!"<<endl<<endl;
+		
+		for(int i=0;i<10;i++)
+		{
+			for(int j=0;j<10;j++)
+			{
+				if(checktable[i][j]==false) score++;
+			}
+		}
+		
+		if(score>=80)
+		{
+			cout<<"               You win !!"<<endl<<endl;
+			showtable(true);
+		    break;
+		}
+
+		score=0;
+	   }
+	   cout<<endl;
+	   cout<<"Would you like to play again ?"<<endl;
+	   cout<<"Yes(Y) / No(N)"<<endl;
+	   cin>>t;
+	   if(toupper(t)=='N')
+	   break;
+	   cout<<endl;
+	}
+}
+
+int main()
+{
+	rungame();
+	return 0;
+}
